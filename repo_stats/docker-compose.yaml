@@ -1,0 +1,25 @@
+version: '1'
+services:
+
+  #Start SonarQube
+  sonarqube:
+    image: sonarqube:latest
+    container_name: Sonarqube
+    environment: 
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    ports: 
+      - '9000:9000'
+    networks:
+      - net1
+
+  # Start scraper after SonarQube is started so the client is not bugged & broken
+  scraper:
+    depends_on:
+      - sonarqube
+    image: scraper:latest
+    container_name: scraper
+    networks:
+      - net1
+      
+networks:
+  net1:
