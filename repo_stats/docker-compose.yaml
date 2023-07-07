@@ -7,6 +7,7 @@ services:
     container_name: Sonarqube
     environment: 
       - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+      - SONAR_TOKEN=12345
     ports: 
       - '9000:9000'
     networks:
@@ -18,6 +19,10 @@ services:
       - sonarqube
     image: scraper:latest
     container_name: scraper
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=testing:sonar
+
     networks:
       - net1
       
