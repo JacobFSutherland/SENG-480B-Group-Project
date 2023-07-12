@@ -14,14 +14,106 @@ services:
       - net1
 
   # Start scraper after SonarQube is started so the client is not bugged & broken
-  scraper:
+  pytorch:
     depends_on:
       - sonarqube
     image: scraper:latest
-    container_name: scraper
+    container_name: pytorch
     environment:
       - SONAR_HOST_URL=http://sonarqube:9000
-      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=testing:sonar
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=pytorch:data
+      - GIT_URL=https://github.com/pytorch/pytorch.git
+
+    networks:
+      - net1
+
+  matplotlib:
+    depends_on:
+      - sonarqube
+    image: scraper:latest
+    container_name: matplotlib
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=matplotlib:data
+      - GIT_URL=https://github.com/matplotlib/matplotlib.git
+
+    networks:
+      - net1
+
+  tensorflow:
+    depends_on:
+      - sonarqube
+    image: scraper:latest
+    container_name: tensorflow
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=tensorflow:data
+      - GIT_URL=https://github.com/tensorflow/tensorflow.git
+
+    networks:
+      - net1
+
+  opencv:
+    depends_on:
+      - sonarqube
+    image: scraper:latest
+    container_name: opencv
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=opencv:data
+      - GIT_URL=https://github.com/opencv/opencv-python.git
+
+    networks:
+      - net1
+
+  ansible:
+    depends_on:
+      - sonarqube
+    image: scraper:latest
+    container_name: ansible
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=ansible:data
+      - GIT_URL=https://github.com/ansible/ansible.git
+
+    networks:
+      - net1
+
+  elasticsearch:
+    depends_on:
+      - sonarqube
+    image: scraper:latest
+    container_name: elasticsearch
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=elasticsearch:data
+      - GIT_URL=https://github.com/elastic/elasticsearch.git
+
+    networks:
+      - net1
+
+  flask:
+    depends_on:
+      - sonarqube
+    image: scraper:latest
+    container_name: flask
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=flask:data
+      - GIT_URL=https://github.com/pallets/flask.git
+
+    networks:
+      - net1
+
+  django:
+    depends_on:
+      - sonarqube
+    image: scraper:latest
+    container_name: django
+    environment:
+      - SONAR_HOST_URL=http://sonarqube:9000
+      - SONAR_SCANNER_OPTS=-Dsonar.projectKey=django:data
+      - GIT_URL=https://github.com/django/django.git
 
     networks:
       - net1

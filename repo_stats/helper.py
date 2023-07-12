@@ -4,7 +4,6 @@ import subprocess
 import os
 from sonarqube import SonarQubeClient
 
-REPO_URL = 'https://github.com/tensorflow/tensorflow.git'
 
 map = {
     1: 10,
@@ -30,9 +29,9 @@ prevQuarter = {
 
 appPath = os.getcwd();
 
-def getAllGitHashes(url, quarters):
+def getAllGitHashes(quarters):
     hashes = []
-    subprocess.run(['git', 'clone', '--no-checkout' ,url, 'repoData'], stdout=subprocess.PIPE).stdout.decode()
+    subprocess.run(['git', 'clone', '--no-checkout' ,"${GIT_URL}", 'repoData'], stdout=subprocess.PIPE).stdout.decode()
     os.chdir('repoData')
     year = datetime.date.today().year
     currentQuarter = map[datetime.date.today().month]
@@ -50,9 +49,9 @@ def getAllGitHashes(url, quarters):
 
     return hashes; 
 
-def cloneRepo(url):
+def cloneRepo():
     os.chdir(appPath)
-    cloneResult = subprocess.run(['git', 'clone' ,url, 'data'], stdout=subprocess.PIPE).stdout.decode()
+    cloneResult = subprocess.run(['git', 'clone' ,"${GIT_URL}" , 'data'], stdout=subprocess.PIPE).stdout.decode()
     os.chdir("data")
 
 def switchToCommitAndRunSonarQube(hash):
@@ -66,15 +65,15 @@ def switchToCommitAndRunSonarQube(hash):
 
 def run_sonar_scanner():
     try:
-        res = subprocess.run(['sonar-scanner', '-X'], stdout=subprocess.PIPE).stdout.decode()
+        res = subprocess.run(['sonar-scanner'], stdout=subprocess.PIPE).stdout.decode()
         print(f"SonarScanner returned with exit code {res}")
     except Exception as e:
         print(f"Error when running SonarScanner: {e}")
 
 
 def main():
-    hashes = getAllGitHashes(REPO_URL,  10)
-    cloneRepo(REPO_URL)
+    hashes = getAllGitHashes( 10)
+    cloneRepo()
     for hash in hashes:
         print(f'Switching to hash {hash}')
         switchToCommitAndRunSonarQube(hash)
